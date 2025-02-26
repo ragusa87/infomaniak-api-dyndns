@@ -3,12 +3,14 @@
 # Updates domain A zone record with WAN IP
 
 IP_SERVICE="http://ifconfig.me"
-RECORD_LIST="jbbd.fr;test.jbbd.fr"
+RECORD_LIST="${RECORD_LIST:-''}"
+FORCE=0
 
-while getopts "46" option ; do
+while getopts "46f" option ; do
   case $option in
     4) IP_VERSION=4 ;;
     6) IP_VERSION=6 ;;
+    f) FORCE=1 ;;
   esac
 done
 
@@ -33,7 +35,7 @@ for RECORD in ${RECORD_LIST//;/ } ; do
   CURRENT_IP=$(dig ${DNS_TYPE} ${RECORD} +short | grep -v '\.$')
   if [[ "${CURRENT_IP}" = "${WAN_IP}" ]] ; then
     echo "$(date "+[%Y-%m-%d %H:%M:%S]") [INFO] Current DNS record for ${RECORD} matches WAN IP (${CURRENT_IP}). Nothing to do."
-    continue
+    [[ $FORCE = 0 ]] && continue
   fi
 
   RESULT=$(curl -s -${IP_VERSION} -X POST "https://${DYNDNS_USER}:${DYNDNS_PASSWORD}@infomaniak.com/nic/update?hostname=${RECORD}")

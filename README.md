@@ -48,4 +48,10 @@ version: '3.7'
 DYNDNS_USER=<YOUR_DYNDNS_USER>
 DYNDNS_PASSWORD=<YOUR_DYNDNS_PASSWORD>
 RECORD_LIST=blog.example.com;www.example.com;example.com
+REFRESH_INTERVAL=3600
+SET_IPV4=yes
+SET_IPV6=no
+
 ```
+
+If you want to use docker-compose.yaml, just copy `dyndns.env.example` to `dyndns.env` adapt the value and run `docker-compose up -d --build --pull`, then check if it works via `docker compose logs -f dyndns`.

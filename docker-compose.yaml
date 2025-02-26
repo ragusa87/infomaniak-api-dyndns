@@ -1,0 +1,7 @@
+services:
+  dyndns:
+    build: .
+    restart: unless-stopped
+    env_file:
+      - "dyndns.env"
+
